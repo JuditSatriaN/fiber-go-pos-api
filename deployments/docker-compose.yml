@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: fiber_sis_app
+    image: postgres
+    ports:
+      - "7000:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./.docker/fiber_sis_app/db_sis_app:/var/lib/postgresql/data
+networks:
+  default:
+    external:
+      name: fiber_sis_app_default
