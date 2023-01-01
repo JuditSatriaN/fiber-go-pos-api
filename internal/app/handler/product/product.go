@@ -119,7 +119,7 @@ func DeleteProductHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := productUC.DeleteProduct(ctx, product.PLU); err != nil {
+	if err := productUC.DeleteProduct(ctx, product.ID); err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
 		})

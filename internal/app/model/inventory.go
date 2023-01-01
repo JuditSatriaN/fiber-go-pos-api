@@ -24,6 +24,6 @@ type ListInventoryDataResponse struct {
 }
 
 type UpdateStockAfterSalesData struct {
-	ID  int32 `json:"id" db:"id"`
-	Qty int64 `json:"qty" db:"qty"`
+	ID  int64 `json:"id" db:"id"`
+	Qty int32 `json:"qty" db:"qty"`
 }

@@ -18,7 +18,7 @@ func GetAllUnit(ctx *fiber.Ctx) ([]model.Unit, error) {
 	return unit, nil
 }
 
-func GetUnitByID(ctx *fiber.Ctx, ID int) (model.Unit, error) {
+func GetUnitByID(ctx *fiber.Ctx, ID int64) (model.Unit, error) {
 	unit, found, err := unitRepo.GetUnitByID(ctx, ID)
 	if err != nil {
 		return model.Unit{}, err
@@ -43,7 +43,7 @@ func UpdateUnit(ctx *fiber.Ctx, unit model.Unit) error {
 	return unitRepo.UpdateUnit(ctx, unit)
 }
 
-func DeleteUnit(ctx *fiber.Ctx, ID int) error {
+func DeleteUnit(ctx *fiber.Ctx, ID int64) error {
 	if _, err := GetUnitByID(ctx, ID); err != nil {
 		return err
 	}

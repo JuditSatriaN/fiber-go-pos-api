@@ -6,7 +6,7 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	UserID          string `json:"user_id" form:"user_id"`
+	ID              int64  `json:"id" form:"id"`
 	UserName        string `json:"user_name" form:"user_name"`
 	FullName        string `json:"full_name" form:"full_name"`
 	IsAdmin         bool   `json:"is_admin" form:"is_admin"`

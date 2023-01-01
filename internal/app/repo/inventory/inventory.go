@@ -82,10 +82,10 @@ const queryGetInventoryByPLU = `
 	WHERE i.plu = ($1)
 `
 
-func GetInventoryByPLU(ctx *fiber.Ctx, PLU string) ([]model.Inventory, error) {
+func GetInventoryByPLU(ctx *fiber.Ctx, ID int64) ([]model.Inventory, error) {
 	var inventories []model.Inventory
 	db := postgresPkg.GetPgConn()
-	if err := db.SelectContext(ctx.Context(), &inventories, queryGetInventoryByPLU, PLU); err != nil {
+	if err := db.SelectContext(ctx.Context(), &inventories, queryGetInventoryByPLU, ID); err != nil {
 		return inventories, err
 	}
 

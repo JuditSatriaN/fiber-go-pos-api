@@ -32,10 +32,10 @@ const queryGetUserByUserID = `
 	WHERE user_id = $1
 `
 
-func GetUserByUserID(ctx *fiber.Ctx, userID string) (model.User, bool, error) {
+func GetUserByUserID(ctx *fiber.Ctx, ID int64) (model.User, bool, error) {
 	var user model.User
 	db := postgresPkg.GetPgConn()
-	if err := db.GetContext(ctx.Context(), &user, queryGetUserByUserID, userID); err != nil {
+	if err := db.GetContext(ctx.Context(), &user, queryGetUserByUserID, ID); err != nil {
 		if err == sql.ErrNoRows {
 			return user, false, nil
 		}
@@ -98,8 +98,8 @@ const queryDeleteUser = `
 	WHERE user_id = $1
 `
 
-func DeleteUser(ctx *fiber.Ctx, userID string) error {
+func DeleteUser(ctx *fiber.Ctx, ID int64) error {
 	db := postgresPkg.GetPgConn()
-	_, err := db.ExecContext(ctx.Context(), queryDeleteUser, userID)
+	_, err := db.ExecContext(ctx.Context(), queryDeleteUser, ID)
 	return err
 }

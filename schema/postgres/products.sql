@@ -24,12 +24,13 @@ CREATE EXTENSION IF NOT EXISTS btree_gin;
 
 CREATE INDEX IF NOT EXISTS products_shop_id_value_text_idx ON products USING GIN (shop_id, value_text_search);
 
-CREATE
-OR REPLACE FUNCTION products_upsert_search_trigger() RETURNS trigger AS $ $ BEGIN new.value_text_search := TO_TSVECTOR(new.id || ' ' || new.name || ' ' || new.barcode);
-
-RETURN new;
-
-END $ $ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION products_upsert_search_trigger() RETURNS trigger AS
+$$
+BEGIN
+    new.value_text_search := TO_TSVECTOR(new.id || ' ' || new.shop_id || ' ' || new.name || ' ' || new.barcode);
+    RETURN new;
+END
+$$ LANGUAGE plpgsql;
 
 BEGIN;
 

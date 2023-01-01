@@ -29,7 +29,7 @@ func InsertSales(ctx *fiber.Ctx, sales model.Sales) error {
 
 	for _, salesDetailData := range sales.Detail {
 		salesData := model.UpdateStockAfterSalesData{
-			ID:  salesDetailData.InventoryID,
+			ID:  salesDetailData.ID,
 			Qty: salesDetailData.Qty,
 		}
 		if err := inventoryRepo.UpdateStockAfterSales(tx, salesData); err != nil {
@@ -41,8 +41,8 @@ func InsertSales(ctx *fiber.Ctx, sales model.Sales) error {
 	for idx, data := range sales.Detail {
 		productSalesStats[idx] = model.ProductSalesStatsDaily{
 			DateSold:  time.Now(),
-			PLU:       data.PLU,
-			TotalSold: data.Qty,
+			ID:        data.ID,
+			TotalSold: int64(data.Qty),
 		}
 	}
 

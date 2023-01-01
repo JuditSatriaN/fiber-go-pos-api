@@ -1,7 +1,8 @@
 package model
 
-type StoreStats struct {
-	StoreID        string `json:"store_id" db:"store_id" validate:"max=30"`
-	TotalProduct   int64  `json:"total_product" db:"total_product"`
-	TotalInventory int64  `json:"total_inventory" db:"total_inventory"`
+type Store struct {
+	ID      int64  `json:"id" db:"id"`
+	Name    string `json:"name" db:"name" validate:"max=50"`
+	Address string `json:"address" db:"address"`
+	Phone   string `json:"phone" db:"phone" validate:"max=15"`
 }

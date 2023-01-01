@@ -1,7 +1,8 @@
 package model
 
 type User struct {
-	UserID   string `json:"user_id" db:"user_id" validate:"required,max=30"`
+	ID       int64  `json:"id" db:"id" validate:"required"`
+	ShopID   int64  `json:"shop_id" db:"shop_id"`
 	UserName string `json:"user_name" db:"user_name" validate:"max=30"`
 	FullName string `json:"full_name" db:"full_name" validate:"max=255"`
 	Password string `json:"password,omitempty" db:"password" validate:"max=255"`

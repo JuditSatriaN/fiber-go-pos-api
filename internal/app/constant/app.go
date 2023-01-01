@@ -12,5 +12,5 @@ const WebSource = "web"
 
 const DefaultPage = 1
 const DefaultLimit = 10
-const DefaultStoreID = "1"
+const DefaultStoreID = 1
 const DefaultPort = ":8080"

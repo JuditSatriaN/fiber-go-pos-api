@@ -18,7 +18,7 @@ func GetAllMember(ctx *fiber.Ctx) ([]model.Member, error) {
 	return members, nil
 }
 
-func GetMemberByID(ctx *fiber.Ctx, ID int) (model.Member, error) {
+func GetMemberByID(ctx *fiber.Ctx, ID int64) (model.Member, error) {
 	member, found, err := memberRepo.GetMemberByID(ctx, ID)
 	if err != nil {
 		return model.Member{}, err
@@ -43,7 +43,7 @@ func UpdateMember(ctx *fiber.Ctx, member model.Member) error {
 	return memberRepo.UpdateMember(ctx, member)
 }
 
-func DeleteMember(ctx *fiber.Ctx, ID int) error {
+func DeleteMember(ctx *fiber.Ctx, ID int64) error {
 	if _, err := GetMemberByID(ctx, ID); err != nil {
 		return err
 	}

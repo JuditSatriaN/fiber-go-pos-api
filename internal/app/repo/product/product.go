@@ -35,11 +35,11 @@ const queryGetProductByPLU = `
 	WHERE plu = $1
 `
 
-func GetProductByPLU(ctx *fiber.Ctx, PLU string) (model.Product, bool, error) {
+func GetProductByPLU(ctx *fiber.Ctx, ID int64) (model.Product, bool, error) {
 	var product model.Product
 	db := postgresPkg.GetPgConn()
 
-	if err := db.GetContext(ctx.Context(), &product, queryGetProductByPLU, PLU); err != nil {
+	if err := db.GetContext(ctx.Context(), &product, queryGetProductByPLU, ID); err != nil {
 		if err == sql.ErrNoRows {
 			return product, false, nil
 		}
@@ -110,7 +110,7 @@ const queryDeleteProduct = `
 	WHERE plu = $1
 `
 
-func DeleteProduct(ctx *fiber.Ctx, tx *sqlx.Tx, productID string) error {
-	_, err := tx.ExecContext(ctx.Context(), queryDeleteProduct, productID)
+func DeleteProduct(ctx *fiber.Ctx, tx *sqlx.Tx, ID int64) error {
+	_, err := tx.ExecContext(ctx.Context(), queryDeleteProduct, ID)
 	return err
 }

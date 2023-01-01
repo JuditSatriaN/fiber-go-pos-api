@@ -32,7 +32,7 @@ const queryGetUnitByID = `
 	WHERE id = $1
 `
 
-func GetUnitByID(ctx *fiber.Ctx, ID int) (model.Unit, bool, error) {
+func GetUnitByID(ctx *fiber.Ctx, ID int64) (model.Unit, bool, error) {
 	var unit model.Unit
 
 	db := postgresPkg.GetPgConn()
@@ -77,7 +77,7 @@ const queryDeleteUnit = `
 	WHERE id = $1
 `
 
-func DeleteUnit(ctx *fiber.Ctx, ID int) error {
+func DeleteUnit(ctx *fiber.Ctx, ID int64) error {
 	db := postgresPkg.GetPgConn()
 	_, err := db.ExecContext(ctx.Context(), queryDeleteUnit, ID)
 	return err

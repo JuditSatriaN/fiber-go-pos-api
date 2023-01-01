@@ -19,8 +19,8 @@ func GetAllUser(ctx *fiber.Ctx) ([]model.User, error) {
 	return users, nil
 }
 
-func GetUserByUserID(ctx *fiber.Ctx, userID string) (model.User, error) {
-	user, found, err := userRepo.GetUserByUserID(ctx, userID)
+func GetUserByUserID(ctx *fiber.Ctx, ID int64) (model.User, error) {
+	user, found, err := userRepo.GetUserByUserID(ctx, ID)
 	if err != nil {
 		return model.User{}, err
 	}
@@ -38,7 +38,7 @@ func InsertUser(ctx *fiber.Ctx, user model.User) error {
 }
 
 func UpdateUser(ctx *fiber.Ctx, user model.User) error {
-	userDB, err := GetUserByUserID(ctx, user.UserID)
+	userDB, err := GetUserByUserID(ctx, user.ID)
 	if err != nil {
 		return err
 	}
@@ -51,16 +51,16 @@ func UpdateUser(ctx *fiber.Ctx, user model.User) error {
 	return userRepo.UpdateUser(ctx, user)
 }
 
-func DeleteUser(ctx *fiber.Ctx, userID string) error {
-	if _, err := GetUserByUserID(ctx, userID); err != nil {
+func DeleteUser(ctx *fiber.Ctx, ID int64) error {
+	if _, err := GetUserByUserID(ctx, ID); err != nil {
 		return err
 	}
 
-	return userRepo.DeleteUser(ctx, userID)
+	return userRepo.DeleteUser(ctx, ID)
 }
 
 func UpsertUser(ctx *fiber.Ctx, user model.User) error {
-	userDB, found, err := userRepo.GetUserByUserID(ctx, user.UserID)
+	userDB, found, err := userRepo.GetUserByUserID(ctx, user.ID)
 	if err != nil {
 		return err
 	}

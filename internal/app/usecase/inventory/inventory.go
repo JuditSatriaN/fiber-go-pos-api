@@ -43,7 +43,7 @@ func SearchInventoryByParam(ctx *fiber.Ctx, search string) ([]model.Inventory, e
 		return []model.Inventory{}, constant.ErrNoDataFound
 	}
 
-	results, err := inventoryRepo.GetInventoryByPLU(ctx, product.PLU)
+	results, err := inventoryRepo.GetInventoryByPLU(ctx, product.ID)
 	if err != nil {
 		return []model.Inventory{}, err
 	}

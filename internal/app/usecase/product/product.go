@@ -45,8 +45,8 @@ func GetAllProduct(ctx *fiber.Ctx, page int, limit int, search string) ([]model.
 	return products, nil
 }
 
-func GetProductByPLU(ctx *fiber.Ctx, PLU string) (model.Product, error) {
-	product, found, err := productRepo.GetProductByPLU(ctx, PLU)
+func GetProductByPLU(ctx *fiber.Ctx, ID int64) (model.Product, error) {
+	product, found, err := productRepo.GetProductByPLU(ctx, ID)
 	if err != nil {
 		return model.Product{}, err
 	}
@@ -97,14 +97,14 @@ func InsertProduct(ctx *fiber.Ctx, product model.Product) error {
 }
 
 func UpdateProduct(ctx *fiber.Ctx, product model.Product) error {
-	if _, err := GetProductByPLU(ctx, product.PLU); err != nil {
+	if _, err := GetProductByPLU(ctx, product.ID); err != nil {
 		return err
 	}
 	return productRepo.UpdateProduct(ctx, product)
 }
 
-func DeleteProduct(ctx *fiber.Ctx, PLU string) error {
-	if _, err := GetProductByPLU(ctx, PLU); err != nil {
+func DeleteProduct(ctx *fiber.Ctx, ID int64) error {
+	if _, err := GetProductByPLU(ctx, ID); err != nil {
 		return err
 	}
 
@@ -114,7 +114,7 @@ func DeleteProduct(ctx *fiber.Ctx, PLU string) error {
 	}
 	defer tx.Rollback()
 
-	if err := productRepo.DeleteProduct(ctx, tx, PLU); err != nil {
+	if err := productRepo.DeleteProduct(ctx, tx, ID); err != nil {
 		return err
 	}
 
@@ -133,7 +133,7 @@ func DeleteProduct(ctx *fiber.Ctx, PLU string) error {
 }
 
 func UpsertProduct(ctx *fiber.Ctx, product model.Product) error {
-	_, found, err := productRepo.GetProductByPLU(ctx, product.PLU)
+	_, found, err := productRepo.GetProductByPLU(ctx, product.ID)
 	if err != nil {
 		return err
 	}

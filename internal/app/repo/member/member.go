@@ -32,7 +32,7 @@ const queryGetMemberByID = `
 	WHERE id = $1
 `
 
-func GetMemberByID(ctx *fiber.Ctx, ID int) (model.Member, bool, error) {
+func GetMemberByID(ctx *fiber.Ctx, ID int64) (model.Member, bool, error) {
 	var member model.Member
 
 	db := postgresPkg.GetPgConn()
@@ -78,7 +78,7 @@ const queryDeleteMember = `
 	WHERE id = $1
 `
 
-func DeleteMember(ctx *fiber.Ctx, ID int) error {
+func DeleteMember(ctx *fiber.Ctx, ID int64) error {
 	db := postgresPkg.GetPgConn()
 	_, err := db.ExecContext(ctx.Context(), queryDeleteMember, ID)
 	return err

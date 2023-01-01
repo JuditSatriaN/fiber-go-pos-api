@@ -81,7 +81,7 @@ func DeleteUserHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	if err := userUC.DeleteUser(ctx, user.UserID); err != nil {
+	if err := userUC.DeleteUser(ctx, user.ID); err != nil {
 		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
 		})

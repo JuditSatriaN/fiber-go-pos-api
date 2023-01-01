@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS members (
     shop_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
     phone VARCHAR(15) NOT NULL,
-    address VARCHAR(15) NOT NULL,
+    address TEXT NOT NULL DEFAULT '',
     create_time TIMESTAMP NOT NULL DEFAULT NOW(),
     update_time TIMESTAMP
 );

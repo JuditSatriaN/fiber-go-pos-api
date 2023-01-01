@@ -36,7 +36,7 @@ const queryGetTotalProduct = `
 	WHERE store_id = $1
 `
 
-func GetTotalProduct(ctx *fiber.Ctx, storeID string) (int64, error) {
+func GetTotalProduct(ctx *fiber.Ctx, storeID int64) (int64, error) {
 	var totalProduct int64
 	db := postgresPkg.GetPgConn()
 	if err := db.GetContext(ctx.Context(), &totalProduct, queryGetTotalProduct, storeID); err != nil {
