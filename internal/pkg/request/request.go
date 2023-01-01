@@ -39,7 +39,7 @@ func BuildShopIDRequest(ctx *fiber.Ctx) (shopID int64, err error) {
 	if shopIDStr != "" {
 		shopID, err = strconv.ParseInt(shopIDStr, 10, 64)
 		if err != nil {
-			return shopID, err
+			return shopID, constant.ErrShopIDMustBeNumber
 		}
 	}
 	return shopID, nil
