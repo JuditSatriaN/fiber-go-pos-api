@@ -7,23 +7,49 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	postgresPkg "github.com/fiber-go-pos-api/internal/pkg/database/postgres"
+	errorPkg "github.com/fiber-go-pos-api/internal/pkg/error"
 )
 
 const queryGetAllMember = `
-	SELECT id, name, phone
+	SELECT id, shop_id, name, phone, address
 	FROM members
+	WHERE shop_id = $1 
+	AND ($2 = '' OR value_text_search @@ plainto_tsquery($2))
 	ORDER BY id
+	LIMIT $3
+	OFFSET $4
 `
 
-func GetAllMember(ctx *fiber.Ctx) ([]model.Member, error) {
+func GetAllMember(ctx *fiber.Ctx, shopID int64, search string, limit int, offset int) ([]model.Member, error) {
 	var members []model.Member
 	db := postgresPkg.GetPgConn()
 
-	if err := db.SelectContext(ctx.Context(), &members, queryGetAllMember); err != nil {
+	if err := db.SelectContext(ctx.Context(), &members, queryGetAllMember, shopID, search, limit, offset); err != nil {
 		return members, err
 	}
 
 	return members, nil
+}
+
+const queryGetTotalDataMember = `
+	SELECT COUNT(*) OVER (ROWS BETWEEN CURRENT ROW AND 1000 FOLLOWING) AS total_count
+	FROM members
+	WHERE $1 = '' OR value_text_search @@ plainto_tsquery($1)
+	LIMIT 1
+`
+
+func GetTotalDataMember(ctx *fiber.Ctx, search string) (int64, error) {
+	var totalData int64
+	db := postgresPkg.GetPgConn()
+
+	if err := db.GetContext(ctx.Context(), &totalData, queryGetTotalDataMember, search); err != nil {
+		if errorPkg.IsErrNotFound(err) {
+			return totalData, nil
+		}
+		return totalData, err
+	}
+
+	return totalData, nil
 }
 
 const queryGetMemberByID = `

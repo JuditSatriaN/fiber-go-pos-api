@@ -7,3 +7,8 @@ type Member struct {
 	Phone   string `json:"phone" db:"phone" validate:"max=15"`
 	Address string `json:"address" db:"address"`
 }
+
+type ListMemberDataResponse struct {
+	Total int64
+	Data  []Member
+}

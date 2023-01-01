@@ -34,9 +34,9 @@ $$ LANGUAGE plpgsql;
 
 BEGIN;
 
-DROP TRIGGER IF EXISTS product_upsert_search ON products;
+DROP TRIGGER IF EXISTS products_upsert_search ON products;
 
-CREATE TRIGGER product_upsert_search BEFORE
+CREATE TRIGGER products_upsert_search BEFORE
 INSERT
     OR
 UPDATE

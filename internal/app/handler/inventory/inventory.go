@@ -6,16 +6,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	inventoryUC "github.com/fiber-go-pos-api/internal/app/usecase/inventory"
-	paginationPkg "github.com/fiber-go-pos-api/internal/pkg/pagination"
 	requestPkg "github.com/fiber-go-pos-api/internal/pkg/request"
 	responsePkg "github.com/fiber-go-pos-api/internal/pkg/response"
 )
 
 // GetInventoryHandler : Get List Data Of Inventory
 func GetInventoryHandler(ctx *fiber.Ctx) error {
-	page, limit, err := paginationPkg.BuildPageAndLimit(ctx)
+	page, limit, err := requestPkg.BuildPageAndLimit(ctx)
 	if err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusBadRequest, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusBadRequest,
 			Message:      err.Error(),
 		})
@@ -24,13 +23,13 @@ func GetInventoryHandler(ctx *fiber.Ctx) error {
 	search := requestPkg.BuildSearchRequest(ctx)
 	result, err := inventoryUC.GetAllInventory(ctx, page, limit, search)
 	if err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusInternalServerError, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusInternalServerError,
 			Message:      err.Error(),
 		})
 	}
 
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusOK, constant.StandardResponse{
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 		ResponseCode: fiber.StatusOK,
 		Data:         result.Data,
 		Metadata:     responsePkg.BuildMetaDataResponse(page, limit, int(result.Total), nil),
@@ -43,13 +42,13 @@ func SearchInventoryHandler(ctx *fiber.Ctx) error {
 
 	result, err := inventoryUC.SearchInventoryByParam(ctx, search)
 	if err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusInternalServerError, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusInternalServerError,
 			Message:      err.Error(),
 		})
 	}
 
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusOK, constant.StandardResponse{Data: result})
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{Data: result})
 }
 
 // InsertInventoryHandler : Insert inventory
@@ -57,20 +56,20 @@ func InsertInventoryHandler(ctx *fiber.Ctx) error {
 	var inventory model.Inventory
 
 	if err := requestPkg.ValidateRequest(ctx, &inventory); err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusBadRequest, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusBadRequest,
 			Message:      err.Error(),
 		})
 	}
 
 	if err := inventoryUC.InsertInventory(ctx, inventory); err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusInternalServerError, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusInternalServerError,
 			Message:      err.Error(),
 		})
 	}
 
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusCreated, constant.StandardResponse{
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 		ResponseCode: fiber.StatusCreated,
 		Message:      "Data inventory berhasil ditambahkan",
 	})
@@ -81,20 +80,20 @@ func UpdateInventoryHandler(ctx *fiber.Ctx) error {
 	var inventory model.Inventory
 
 	if err := requestPkg.ValidateRequest(ctx, &inventory); err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusBadRequest, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusBadRequest,
 			Message:      err.Error(),
 		})
 	}
 
 	if err := inventoryUC.UpdateInventory(ctx, inventory); err != nil {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusInternalServerError, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusInternalServerError,
 			Message:      err.Error(),
 		})
 	}
 
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusOK, constant.StandardResponse{
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 		ResponseCode: fiber.StatusOK,
 		Message:      "Data inventory berhasil diubah",
 	})
@@ -132,7 +131,7 @@ func UpsertInventoryHandler(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusOK, constant.StandardResponse{Data: inventory})
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{Data: inventory})
 }
 
 func UpdateStockInventoryHandler(ctx *fiber.Ctx) error {

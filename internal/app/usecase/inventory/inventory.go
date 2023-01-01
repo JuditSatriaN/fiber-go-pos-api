@@ -9,12 +9,12 @@ import (
 	productRepo "github.com/fiber-go-pos-api/internal/app/repo/product"
 	statRepo "github.com/fiber-go-pos-api/internal/app/repo/stat"
 	postgresPkg "github.com/fiber-go-pos-api/internal/pkg/database/postgres"
-	paginationPkg "github.com/fiber-go-pos-api/internal/pkg/pagination"
+	requestPkg "github.com/fiber-go-pos-api/internal/pkg/request"
 )
 
 // GetAllInventory : Get List Of Data Inventory
 func GetAllInventory(ctx *fiber.Ctx, page int, limit int, search string) (model.ListInventoryDataResponse, error) {
-	offset := paginationPkg.BuildOffset(page, limit)
+	offset := requestPkg.BuildOffset(page, limit)
 
 	inventories, err := inventoryRepo.GetALlInventory(ctx, search, limit, offset)
 	if err != nil {

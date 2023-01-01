@@ -8,6 +8,10 @@ import (
 )
 
 func BuildMetaDataResponse[T constant.IntegerNumber](page T, limit T, total T, links any) constant.MetadataResponse {
+	if page == 0 {
+		page = constant.DefaultPage
+	}
+
 	if limit == 0 {
 		limit = constant.DefaultLimit
 	}
@@ -27,9 +31,14 @@ func BuildMetaDataResponse[T constant.IntegerNumber](page T, limit T, total T, l
 }
 
 // BuildStandardResponse global function to response in this project
-func BuildStandardResponse(ctx *fiber.Ctx, responseCode int, data constant.StandardResponse) error {
+func BuildStandardResponse(ctx *fiber.Ctx, res constant.StandardResponse) error {
 	ctx.Set("CONTENT-TYPE", "application/json; charset=utf-8")
-	return ctx.Status(responseCode).JSON(data)
+	return ctx.Status(res.ResponseCode).JSON(constant.StandardResponse{
+		ResponseCode: res.ResponseCode,
+		Message:      res.Message,
+		Data:         NilSliceToEmptySlice(res.Data),
+		Metadata:     res.Metadata,
+	})
 }
 
 // BuildJSONRes global function to build json response

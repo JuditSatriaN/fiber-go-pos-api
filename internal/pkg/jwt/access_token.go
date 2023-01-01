@@ -21,7 +21,7 @@ func AccessTokenMiddleware() fiber.Handler {
 // accessTokenError custom package to handle jwt access token error
 func accessTokenError(ctx *fiber.Ctx, err error) error {
 	if err.Error() == constant.ErrMissingOrMalformedJWT {
-		return response.BuildStandardResponse(ctx, fiber.StatusUnauthorized, constant.StandardResponse{
+		return response.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusUnauthorized,
 			Message:      constant.ErrMissingOrMalformedJWT,
 		})

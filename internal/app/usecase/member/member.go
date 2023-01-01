@@ -7,15 +7,26 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	memberRepo "github.com/fiber-go-pos-api/internal/app/repo/member"
+	requestPkg "github.com/fiber-go-pos-api/internal/pkg/request"
 )
 
-func GetAllMember(ctx *fiber.Ctx) ([]model.Member, error) {
-	members, err := memberRepo.GetAllMember(ctx)
+func GetAllMember(ctx *fiber.Ctx, shopID int64, page int, limit int, search string) (model.ListMemberDataResponse, error) {
+	offset := requestPkg.BuildOffset(page, limit)
+
+	members, err := memberRepo.GetAllMember(ctx, shopID, search, limit, offset)
 	if err != nil {
-		return []model.Member{}, err
+		return model.ListMemberDataResponse{}, err
 	}
 
-	return members, nil
+	totalData, err := memberRepo.GetTotalDataMember(ctx, search)
+	if err != nil {
+		return model.ListMemberDataResponse{}, err
+	}
+
+	return model.ListMemberDataResponse{
+		Total: totalData,
+		Data:  members,
+	}, nil
 }
 
 func GetMemberByID(ctx *fiber.Ctx, ID int64) (model.Member, error) {

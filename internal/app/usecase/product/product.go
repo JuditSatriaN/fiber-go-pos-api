@@ -10,12 +10,12 @@ import (
 	productRepo "github.com/fiber-go-pos-api/internal/app/repo/product"
 	statRepo "github.com/fiber-go-pos-api/internal/app/repo/stat"
 	postgresPkg "github.com/fiber-go-pos-api/internal/pkg/database/postgres"
-	paginationPkg "github.com/fiber-go-pos-api/internal/pkg/pagination"
+	requestPkg "github.com/fiber-go-pos-api/internal/pkg/request"
 )
 
 // GetAllDTProduct : Get List Of Product for Datatable
 func GetAllDTProduct(ctx *fiber.Ctx, page int, limit int, search string) (model.ListProductDataResponse, error) {
-	offset := paginationPkg.BuildOffset(page, limit)
+	offset := requestPkg.BuildOffset(page, limit)
 
 	products, err := productRepo.GetALlProducts(ctx, search, limit, offset)
 	if err != nil {
@@ -35,7 +35,7 @@ func GetAllDTProduct(ctx *fiber.Ctx, page int, limit int, search string) (model.
 
 // GetAllProduct : Get List Of Product
 func GetAllProduct(ctx *fiber.Ctx, page int, limit int, search string) ([]model.Product, error) {
-	offset := paginationPkg.BuildOffset(page, limit)
+	offset := requestPkg.BuildOffset(page, limit)
 
 	products, err := productRepo.GetALlProducts(ctx, search, limit, offset)
 	if err != nil {

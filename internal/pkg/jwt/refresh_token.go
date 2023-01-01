@@ -36,12 +36,12 @@ func refreshTokenSuccess(ctx *fiber.Ctx) error {
 
 func refreshTokenError(ctx *fiber.Ctx, err error) error {
 	if err.Error() == constant.ErrMissingOrMalformedJWT {
-		return responsePkg.BuildStandardResponse(ctx, fiber.StatusUnauthorized, constant.StandardResponse{
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 			ResponseCode: fiber.StatusUnauthorized,
 			Message:      constant.ErrMissingOrMalformedJWT,
 		})
 	}
-	return responsePkg.BuildStandardResponse(ctx, fiber.StatusUnauthorized, constant.StandardResponse{
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
 		ResponseCode: fiber.StatusUnauthorized,
 		Message:      constant.ErrInvalidORExpiredJWT,
 	})

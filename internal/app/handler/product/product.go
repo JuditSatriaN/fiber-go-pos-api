@@ -5,14 +5,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	productUC "github.com/fiber-go-pos-api/internal/app/usecase/product"
-	paginationPkg "github.com/fiber-go-pos-api/internal/pkg/pagination"
 	requestPkg "github.com/fiber-go-pos-api/internal/pkg/request"
 	responsePkg "github.com/fiber-go-pos-api/internal/pkg/response"
 )
 
 // GetALLDTProductHandler : Get List Of Product for Datatable
 func GetALLDTProductHandler(ctx *fiber.Ctx) error {
-	page, limit, err := paginationPkg.BuildPageAndLimit(ctx)
+	page, limit, err := requestPkg.BuildPageAndLimit(ctx)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
@@ -33,7 +32,7 @@ func GetALLDTProductHandler(ctx *fiber.Ctx) error {
 
 // GetALLProductHandler : Get List Of Product
 func GetALLProductHandler(ctx *fiber.Ctx) error {
-	page, limit, err := paginationPkg.BuildPageAndLimit(ctx)
+	page, limit, err := requestPkg.BuildPageAndLimit(ctx)
 	if err != nil {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
