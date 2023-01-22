@@ -13,7 +13,7 @@ func ProcessLoginForm(ctx *fiber.Ctx, req model.LoginRequest) (model.LoginRespon
 	// Initialization variable
 	var res model.LoginResponse
 
-	data, err := userRepo.GetUserByUserName(ctx, req.UserName)
+	data, err := userRepo.GetUserByUserName(ctx, 0, req.UserName)
 	if err != nil {
 		return res, constant.ErrInvalidLogin
 	}

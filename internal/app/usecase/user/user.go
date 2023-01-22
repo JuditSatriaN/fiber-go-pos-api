@@ -2,7 +2,6 @@ package user
 
 import (
 	"fmt"
-
 	"github.com/fiber-go-pos-api/internal/app/model"
 	"github.com/gofiber/fiber/v2"
 
@@ -37,7 +36,7 @@ func GetUserByUserID(ctx *fiber.Ctx, ID int64) (model.User, error) {
 	}
 
 	if !found {
-		return model.User{}, fmt.Errorf("user dengan nama : %s tidak ditemukan", user.UserName)
+		return model.User{}, fmt.Errorf("user dengan ID : %d tidak ditemukan", user.ID)
 	}
 
 	return user, nil

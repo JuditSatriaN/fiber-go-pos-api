@@ -45,21 +45,33 @@ func GetAllUserHandler(ctx *fiber.Ctx) error {
 
 // InsertUserHandler : Insert User
 func InsertUserHandler(ctx *fiber.Ctx) error {
-	var user model.User
+	var user model.UserInsertPayload
 
 	if err := requestPkg.ValidateRequest(ctx, &user); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusBadRequest,
+			Message:      err.Error(),
 		})
 	}
 
-	if err := userUC.InsertUser(ctx, user); err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
+	err := userUC.InsertUser(ctx, model.User{
+		ShopID:   user.ShopID,
+		UserName: user.UserName,
+		FullName: user.FullName,
+		Password: user.Password,
+		IsAdmin:  user.IsAdmin,
+	})
+	if err != nil {
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusInternalServerError,
+			Message:      err.Error(),
 		})
 	}
 
-	return ctx.SendString("Data user berhasil disimpan")
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+		ResponseCode: fiber.StatusCreated,
+		Message:      "Data user berhasil ditambahkan",
+	})
 }
 
 // UpdateUserHandler : Update User
@@ -67,54 +79,77 @@ func UpdateUserHandler(ctx *fiber.Ctx) error {
 	var user model.User
 
 	if err := requestPkg.ValidateRequest(ctx, &user); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusBadRequest,
+			Message:      err.Error(),
 		})
 	}
 
 	if err := userUC.UpdateUser(ctx, user); err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusInternalServerError,
+			Message:      err.Error(),
 		})
 	}
 
-	return ctx.SendString("Data user berhasil diubah")
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+		ResponseCode: fiber.StatusCreated,
+		Message:      "Data user berhasil diubah",
+	})
 }
 
 // DeleteUserHandler : Delete User
 func DeleteUserHandler(ctx *fiber.Ctx) error {
-	var user model.User
+	var user model.UserDeletePayload
 
 	if err := requestPkg.ValidateRequest(ctx, &user); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusBadRequest,
+			Message:      err.Error(),
 		})
 	}
 
 	if err := userUC.DeleteUser(ctx, user.ID); err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusInternalServerError,
+			Message:      err.Error(),
 		})
 	}
 
-	return ctx.SendString("Data user berhasil dihapus")
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+		ResponseCode: fiber.StatusCreated,
+		Message:      "Data user berhasil dihapus",
+	})
 }
 
 // UpsertUserHandler : Upsert User
 func UpsertUserHandler(ctx *fiber.Ctx) error {
-	var user model.User
+	var user model.UserUpsertPayload
 
 	if err := requestPkg.ValidateRequest(ctx, &user); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusBadRequest,
+			Message:      err.Error(),
 		})
 	}
 
-	if err := userUC.UpsertUser(ctx, user); err != nil {
-		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
+	err := userUC.UpsertUser(ctx, model.User{
+		ID:       user.ID,
+		ShopID:   user.ShopID,
+		UserName: user.UserName,
+		FullName: user.FullName,
+		Password: user.Password,
+		IsAdmin:  user.IsAdmin,
+	})
+	if err != nil {
+		return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+			ResponseCode: fiber.StatusInternalServerError,
+			Message:      err.Error(),
 		})
 	}
 
-	return responsePkg.BuildJSONRes(ctx, user)
+	return responsePkg.BuildStandardResponse(ctx, constant.StandardResponse{
+		ResponseCode: fiber.StatusOK,
+		Message:      "Data member berhasil diubah",
+	})
 }

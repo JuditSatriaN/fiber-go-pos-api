@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE UNIQUE INDEX IF NOT EXISTS shop_id_user_name ON users (shop_id, user_name);
 
-CREATE INDEX IF NOT EXISTS user_is_admin ON users (user_name, is_admin);
+CREATE INDEX IF NOT EXISTS shop_id_user_is_admin ON users (shop_id, user_name, is_admin);
 
 CREATE OR REPLACE FUNCTION users_upsert_search_trigger() RETURNS trigger AS
 $$

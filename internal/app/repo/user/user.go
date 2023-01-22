@@ -72,15 +72,15 @@ func GetUserByUserID(ctx *fiber.Ctx, ID int64) (model.User, bool, error) {
 }
 
 const queryGetUserByUserName = `
-	SELECT id, user_name, full_name, password, is_admin
+	SELECT id, shop_id, user_name, full_name, password, is_admin
 	FROM users
-	WHERE user_name = $1
+	WHERE shop_id = $1 AND user_name = $2
 `
 
-func GetUserByUserName(ctx *fiber.Ctx, userName string) (model.User, error) {
+func GetUserByUserName(ctx *fiber.Ctx, shopID int64, userName string) (model.User, error) {
 	var user model.User
 	db := postgresPkg.GetPgConn()
-	if err := db.GetContext(ctx.Context(), &user, queryGetUserByUserName, userName); err != nil {
+	if err := db.GetContext(ctx.Context(), &user, queryGetUserByUserName, shopID, userName); err != nil {
 		if errorPkg.IsErrNoRows(err) {
 			return user, constant.ErrUserNotFound
 		}
